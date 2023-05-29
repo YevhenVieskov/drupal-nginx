@@ -30,7 +30,7 @@ pipeline {
         stage("Clone repository to swarm manager") {			 
             steps {
                 sshagent(['ssh-swarm']) {
-                    sh "ssh -o StrictHostKeyChecking=no ubuntu@${params.IP_DEPLOY} git clone ${REPO_URL}"					
+                    sh "ssh -o StrictHostKeyChecking=no ubuntu@${params.IP_DEPLOY} git clone ${REPO_URL} || true"					
                 }         
             }
 	    }
