@@ -11,9 +11,9 @@ services:
       - 'mariadb_data:/bitnami/mariadb'
     deploy:
       placement:
-        #constraints: [node.role == worker]
-        constrains:
-          - node.labels.manager == yes
+        constraints: [node.role == worker]
+        #constrains:
+        #  - node.labels.manager == yes
       #mode: replicated
       #replicas: 2   
       # service resource management
@@ -58,9 +58,9 @@ services:
       - mariadb
     deploy:
       placement:
-        #constraints: [node.role == manager]
-        constrains:
-          - node.labels.manager == yes
+        constraints: [node.role == manager]
+        #constrains:
+        #  - node.labels.manager == yes
       #mode: replicated
       #replicas: 2      
       # service resource management

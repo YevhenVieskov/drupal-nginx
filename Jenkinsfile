@@ -29,7 +29,7 @@ pipeline {
 
         stage("Clone repository to swarm manager") {			 
             steps {
-                sshagent(credentials : ['ssh-swarm']) {
+                sshagent(['ssh-swarm']) {
 					sh  '''#!/bin/bash					                   
 				           ssh -o "StrictHostKeyChecking=no" ubuntu@${params.IP_DEPLOY} "git clone "${REPO_URL}"                          
                         '''	
@@ -39,7 +39,7 @@ pipeline {
 
         stage("Deploy docker stack to docker swarm") {			 
             steps {
-                sshagent(credentials : ['ssh-swarm']) {
+                sshagent(['ssh-swarm']) {
 					sh  '''#!/bin/bash					                   
 				           ssh -o "StrictHostKeyChecking=no" ubuntu@${params.IP_DEPLOY} "docker stack deploy --compose-file=${FOLDER_NAME}docker-stack.yml drupal"                           
 				        '''	
@@ -53,7 +53,7 @@ pipeline {
 
         stage("Delete application and clean up server") {			 
             steps {
-                sshagent(credentials : ['ssh-swarm']) {
+                sshagent(['ssh-swarm']) {
 					sh  '''#!/bin/bash					                   
 				           ssh -o "StrictHostKeyChecking=no" ubuntu@${params.IP_DEPLOY} 'docker stack rm drupal'                           
 				        '''	
