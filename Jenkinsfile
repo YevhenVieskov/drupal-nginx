@@ -2,7 +2,7 @@
 
 //variables
 def REPO_URL = "https://github.com/YevhenVieskov/drupal-nginx.git"
-def FOLDER_NAME = "/home/ubuntu/drupal-nginx"
+def FOLDER_NAME = "/home/ubuntu/drupal-nginx/"
 
 properties([pipelineTriggers([githubPush()])])
 
