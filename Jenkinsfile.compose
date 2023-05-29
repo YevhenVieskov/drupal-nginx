@@ -39,9 +39,8 @@ pipeline {
         stage("Clone repository to swarm manager") {			 
             steps {
                 sshagent(['ssh-swarm']) {
-                    sh "ssh -o StrictHostKeyChecking=no ubuntu@${params.IP_DEPLOY} git clone ${REPO_URL} || true"
-                    //sh "ssh -o StrictHostKeyChecking=no ubuntu@${params.IP_DEPLOY} cp ${FOLDER_NAME}docker-stack.yml ${DEST_FOLDER_NAME}"
-                    				
+                    sh "ssh -o StrictHostKeyChecking=no ubuntu@${params.IP_DEPLOY} git clone ${REPO_URL} || true"                
+                    			
                 }         
             }
 	    }
@@ -49,32 +48,10 @@ pipeline {
         stage("Deploy docker stack to docker swarm") {			 
             steps {
                 sshagent(['ssh-swarm']) {
-                    sh "ssh -o StrictHostKeyChecking=no ubuntu@${params.IP_DEPLOY} docker stack deploy --compose-file=${FOLDER_NAME}docker-stack.yml drupal"				
+                    sh "ssh -o StrictHostKeyChecking=no ubuntu@${params.IP_DEPLOY} docker compose -f${FOLDER_NAME}docker-compose.yml up -d"				
                 }         
             }
 	    }
-
-        stage("List swarm nodes") {			 
-            steps {
-                sshagent(['ssh-swarm']) {
-                    sh "ssh -o StrictHostKeyChecking=no ubuntu@${params.IP_DEPLOY} docker node ls"
-                    sh "ssh -o StrictHostKeyChecking=no ubuntu@${params.IP_DEPLOY} docker node ps"                 		
-                }         
-            }
-	    }
-
-        stage("List stack, services, containers") {			 
-            steps {
-                sshagent(['ssh-swarm']) {
-                    sh "ssh -o StrictHostKeyChecking=no ubuntu@${params.IP_DEPLOY} docker stack ls"	
-                    sh "ssh -o StrictHostKeyChecking=no ubuntu@${params.IP_DEPLOY} docker service ls"
-                    sh "ssh -o StrictHostKeyChecking=no ubuntu@${params.IP_DEPLOY} docker container ls"			
-                }         
-            }
-	    }
-
-
-
 
         stage("Approve") {
             steps { approve('Do you want to destroy your application?') }
@@ -83,7 +60,7 @@ pipeline {
         stage("Delete application and clean up server") {			 
             steps {
                 sshagent(['ssh-swarm']) {
-                    sh "ssh -o StrictHostKeyChecking=no ubuntu@${params.IP_DEPLOY} docker stack rm drupal"					
+                    sh "ssh -o StrictHostKeyChecking=no ubuntu@${params.IP_DEPLOY} docker compose down"					
                 }         
             }
 	    }
