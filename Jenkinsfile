@@ -41,7 +41,7 @@ pipeline {
             steps {
                 sshagent(['ssh-swarm']) {
 					sh  '''#!/bin/bash					                   
-				           ssh -o "StrictHostKeyChecking=no" ubuntu@${params.IP_DEPLOY} "docker stack deploy --compose-file=${FOLDER_NAME}docker-stack.yml drupal"                           
+				           ssh -o "StrictHostKeyChecking=no" ubuntu@"${params.IP_DEPLOY}" "docker stack deploy --compose-file=${FOLDER_NAME}docker-stack.yml drupal"                           
 				        '''	
                 }         
             }
@@ -55,7 +55,7 @@ pipeline {
             steps {
                 sshagent(['ssh-swarm']) {
 					sh  '''#!/bin/bash					                   
-				           ssh -o "StrictHostKeyChecking=no" ubuntu@${params.IP_DEPLOY} "docker stack rm drupal"                           
+				           ssh -o "StrictHostKeyChecking=no" ubuntu@"${params.IP_DEPLOY}" "docker stack rm drupal"                           
 				        '''	
                 }         
             }
