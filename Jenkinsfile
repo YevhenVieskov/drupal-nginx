@@ -31,7 +31,7 @@ pipeline {
             steps {
                 sshagent(['ssh-swarm']) {
 					sh  '''#!/bin/bash					                   
-				           ssh -o "StrictHostKeyChecking=no" ubuntu@${params.IP_DEPLOY} "git clone "${REPO_URL}"                          
+				           ssh -o "StrictHostKeyChecking=no" ubuntu@${params.IP_DEPLOY} "git clone ${REPO_URL}"                          
                         '''	
                 }         
             }
@@ -55,7 +55,7 @@ pipeline {
             steps {
                 sshagent(['ssh-swarm']) {
 					sh  '''#!/bin/bash					                   
-				           ssh -o "StrictHostKeyChecking=no" ubuntu@${params.IP_DEPLOY} 'docker stack rm drupal'                           
+				           ssh -o "StrictHostKeyChecking=no" ubuntu@${params.IP_DEPLOY} "docker stack rm drupal"                           
 				        '''	
                 }         
             }
