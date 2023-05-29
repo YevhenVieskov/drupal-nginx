@@ -3,6 +3,7 @@
 //variables
 def REPO_URL = "https://github.com/YevhenVieskov/drupal-nginx.git"
 def FOLDER_NAME = "/home/ubuntu/drupal-nginx/"
+def DEST_FOLDER_NAME = "/home/ubuntu/"
 
 properties([pipelineTriggers([githubPush()])])
 
@@ -30,7 +31,9 @@ pipeline {
         stage("Clone repository to swarm manager") {			 
             steps {
                 sshagent(['ssh-swarm']) {
-                    sh "ssh -o StrictHostKeyChecking=no ubuntu@${params.IP_DEPLOY} git clone ${REPO_URL} || true"					
+                    sh "ssh -o StrictHostKeyChecking=no ubuntu@${params.IP_DEPLOY} git clone ${REPO_URL} || true"
+                    sh "ssh -o StrictHostKeyChecking=no ubuntu@${params.IP_DEPLOY} cp ${FOLDER_NAME}docker-stack.yml ${DEST_FOLDER_NAME}"
+                    sh "ssh -o StrictHostKeyChecking=no ubuntu@${params.IP_DEPLOY} rm -rf ${FOLDER_NAME}"				
                 }         
             }
 	    }
@@ -38,7 +41,7 @@ pipeline {
         stage("Deploy docker stack to docker swarm") {			 
             steps {
                 sshagent(['ssh-swarm']) {
-                    sh "ssh -o StrictHostKeyChecking=no ubuntu@${params.IP_DEPLOY} docker stack deploy --compose-file=${FOLDER_NAME}docker-stack.yml drupal"				
+                    sh "ssh -o StrictHostKeyChecking=no ubuntu@${params.IP_DEPLOY} docker stack deploy --compose-file=${DEST_FOLDER_NAME}docker-stack.yml drupal"				
                 }         
             }
 	    }
